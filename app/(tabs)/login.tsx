@@ -3,8 +3,8 @@ import { Image, StyleSheet, TouchableOpacity, Alert, View } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import CustomButton from "@/components/Button";
-import CustomInput from "@/components/Input";
+import CustomButton from "@/components/CustomButton";
+import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
 
 export default function LoginScreen() {
