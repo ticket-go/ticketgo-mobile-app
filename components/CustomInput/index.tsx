@@ -7,10 +7,10 @@ interface InputProps {
   value: string;
   onChangeText: (text: string) => void;
   placeholder: string;
-  secureTextEntry?: boolean; 
+  secureTextEntry?: boolean;
 }
 
-export default function CustomInput({
+export function CustomInput({
   label,
   value,
   onChangeText,

@@ -9,7 +9,7 @@ interface ButtonProps {
   textColor?: string;
 }
 
-export default function CustomButton({
+export function CustomButton({
   title,
   onPress,
   backgroundColor = "#C1FF5B",
