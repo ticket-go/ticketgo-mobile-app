@@ -1,5 +1,5 @@
 import { useColorScheme } from "react-native";
-import { Colors } from "@/styles/theme";
+import { Colors } from "../styles/theme";
 
 export function useThemeColor(
   props: { light?: string; dark?: string },

@@ -1,13 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components/native";
 import { TouchableOpacity, Alert, Text } from "react-native";
-import { SpanTitle } from "@/styles/theme";
-
-import { Button } from "@/components/button";
-import { Input } from "@/components/input";
-import { Container } from "@/components/container";
-import { Typography } from "@/components/typography";
-import { useAuth } from "@/context/authContext";
+import { SpanTitle } from "../styles/theme";
+import { Button } from "../components/button";
+import { Input } from "../components/input";
+import { Container } from "../components/container";
+import { Typography } from "../components/typography";
+import { useAuth } from "../context/authContext";
 
 export default function SignIn() {
   const [username, setUsername] = useState<string>("");
@@ -33,13 +32,11 @@ export default function SignIn() {
         <Typography type="title" style={{ marginBottom: 30 }}>
           Ticket<SpanTitle>GO</SpanTitle>
         </Typography>
-
         <Input
           value={username}
           onChangeText={setUsername}
           placeholder="Username"
         />
-
         <Input
           value={password}
           onChangeText={setPassword}

@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authLogin, authLogout } from "@/api/auth";
 import { Auth } from "@/types/auth";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
+import { getSecureItem, saveSecureItem, deleteSecureItem } from "@/lib/utils";
 
 interface AuthContextType {
   user: Auth["user"] | null;
@@ -25,11 +25,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
+  const router = useRouter();
+
   useEffect(() => {
     const loadStoredAuth = async () => {
-      const storedUser = await AsyncStorage.getItem("user");
-      const storedAccessToken = await AsyncStorage.getItem("access_token");
-      const storedRefreshToken = await AsyncStorage.getItem("refresh_token");
+      const storedUser = await getSecureItem("user");
+      const storedAccessToken = await getSecureItem("access_token");
+      const storedRefreshToken = await getSecureItem("refresh_token");
 
       if (storedUser && storedAccessToken && storedRefreshToken) {
         setUser(JSON.parse(storedUser));
@@ -51,19 +53,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [user, accessToken, refreshToken]);
 
   const login = async (username: string, password: string): Promise<void> => {
-    await authLogin(username, password);
+    const authData = await authLogin(username, password);
+
+    if (authData) {
+      await saveSecureItem("user", JSON.stringify(authData.user));
+      await saveSecureItem("access_token", authData.access_token);
+      await saveSecureItem("refresh_token", authData.refresh_token);
+
+      setUser(authData.user);
+      setAccessToken(authData.access_token);
+      setRefreshToken(authData.refresh_token);
+      router.replace("/(tabs)/");
+    }
   };
 
   const logout = async () => {
     await authLogout();
 
-    await AsyncStorage.removeItem("user");
-    await AsyncStorage.removeItem("access_token");
-    await AsyncStorage.removeItem("refresh_token");
+    await deleteSecureItem("user");
+    await deleteSecureItem("access_token");
+    await deleteSecureItem("refresh_token");
     setUser(null);
     setAccessToken(null);
     setRefreshToken(null);
-    router.replace("/(public)");
+    router.navigate("/(tabs)/");
   };
 
   return (

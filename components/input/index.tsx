@@ -1,5 +1,5 @@
 import { InputContainer } from "./styles";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "../../hooks/useThemeColor";
 
 interface InputProps {
   value: string;

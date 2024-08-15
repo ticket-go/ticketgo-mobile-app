@@ -1,20 +1,8 @@
-import axios, {
-  AxiosInstance,
-  InternalAxiosRequestConfig,
-  AxiosError,
-} from "axios";
+import { InternalAxiosRequestConfig, AxiosError } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from "../services/api";
 
-const BASE_URL = "https://ticketgo-backend-dev.onrender.com";
-
-export const axiosApiInstance: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-axiosApiInstance.interceptors.request.use(
+api.interceptors.request.use(
   async (
     config: InternalAxiosRequestConfig
   ): Promise<InternalAxiosRequestConfig> => {
@@ -33,7 +21,7 @@ axiosApiInstance.interceptors.request.use(
   }
 );
 
-axiosApiInstance.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     if (error.response && error.response.status === 401) {
