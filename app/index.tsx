@@ -35,12 +35,12 @@ export default function SignIn() {
         <Input
           value={username}
           onChangeText={setUsername}
-          placeholder="Username"
+          placeholder="Usuário"
         />
         <Input
           value={password}
           onChangeText={setPassword}
-          placeholder="password"
+          placeholder="Senha"
           secureTextEntry={true}
         />
 
