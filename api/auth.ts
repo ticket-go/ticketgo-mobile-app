@@ -7,27 +7,26 @@ export async function authLogin(
   password: string
 ): Promise<Auth | void> {
   try {
-    const response = await fetch("http://127.0.0.1:8000/auth/login/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
+    const response = await api.post("/auth/login/", {
+      username,
+      password,
     });
 
     if (response.status === 200) {
-      const accessToken = response.headers.get("access-token");
-      const refreshToken = response.headers.get("refresh-token");
+      const data = await response.data;
+      const { access_token, refresh_token, user } = data;
 
-      if (accessToken && refreshToken) {
-        await saveSecureItem("access_token", accessToken);
-        await saveSecureItem("refresh_token", refreshToken);
+      if (access_token && refresh_token) {
+        await saveSecureItem("access_token", access_token);
+        await saveSecureItem("refresh_token", refresh_token);
+        alert(`${user.first_name} seja-bem vindo!`);
       } else {
         console.error("Tokens are undefined, check the response structure.");
       }
+      return data;
+    } else {
+      console.error("Response not OK:", response.status);
     }
-    return response.json();
   } catch (error) {
     console.error("Error during login:", error);
   }
@@ -36,10 +35,13 @@ export async function authLogin(
 export async function authLogout(): Promise<{ success: boolean }> {
   try {
     const response = await api.post("/auth/logout/");
+
     if (response.status === 200) {
       await deleteSecureItem("access_token");
       await deleteSecureItem("refresh_token");
       return { success: true };
+    } else {
+      console.error("Logout failed with status:", response.status);
     }
   } catch (error) {
     console.error("Error during logout:", error);
