@@ -1,6 +1,6 @@
 import { api } from "../services/api";
 import { Auth } from "../types/auth";
-import { saveSecureItem, deleteSecureItem } from "@/lib/utils";
+import { saveSecureItem, deleteSecureItem, getSecureItem } from "@/lib/utils";
 
 export async function authLogin(
   username: string,
@@ -34,7 +34,17 @@ export async function authLogin(
 
 export async function authLogout(): Promise<{ success: boolean }> {
   try {
-    const response = await api.post("/auth/logout/");
+    const token = await getSecureItem("access_token");
+
+    const response = await api.post(
+      "/auth/logout/",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (response.status === 200) {
       await deleteSecureItem("access_token");
