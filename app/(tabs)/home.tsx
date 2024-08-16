@@ -11,11 +11,16 @@ import { Typography } from "@/components/typography";
 import { EventCard } from "@/components/event-card";
 import { Event } from "@/types/event";
 import { api } from "@/services/api";
+import { Button } from "@/components/button";
+import { useAuth } from "@/context/authContext";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { logout } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchEvents() {
@@ -31,6 +36,16 @@ export default function HomeScreen() {
     }
     fetchEvents();
   }, []);
+
+  const handleLogout = () => {
+    try {
+      logout();
+      router.replace("/");
+      alert("Logout realizado com sucesso");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
   const renderItem: ListRenderItem<Event> = ({ item }) => (
     <EventCard event={item} />
@@ -54,7 +69,10 @@ export default function HomeScreen() {
 
   return (
     <Container>
-      <FlatList
+      <Button title="Logout" onPress={handleLogout} />
+      <Button title="Back to Index" onPress={() => router.push('/')} />
+
+      {/* <FlatList
         data={events}
         renderItem={renderItem}
         keyExtractor={(item) => item.uuid}
@@ -63,13 +81,16 @@ export default function HomeScreen() {
         horizontal={true}
         ItemSeparatorComponent={() => <Separator />}
         snapToInterval={120}
-      />
+      /> */}
     </Container>
   );
 }
 
 const Container = styled.View`
   flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin: 4px;
 `;
 
 const Content = styled.View`

@@ -53,30 +53,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [user, accessToken, refreshToken]);
 
   const login = async (username: string, password: string): Promise<void> => {
-    const authData = await authLogin(username, password);
+    try {
+      const authData = await authLogin(username, password);
 
-    if (authData) {
-      await saveSecureItem("user", JSON.stringify(authData.user));
-      await saveSecureItem("access_token", authData.access_token);
-      await saveSecureItem("refresh_token", authData.refresh_token);
+      if (authData) {
+        await saveSecureItem("user", JSON.stringify(authData.user));
+        await saveSecureItem("access_token", authData.access_token);
+        await saveSecureItem("refresh_token", authData.refresh_token);
 
-      setUser(authData.user);
-      setAccessToken(authData.access_token);
-      setRefreshToken(authData.refresh_token);
-      router.replace("/(tabs)/");
+        setUser(authData.user);
+        setAccessToken(authData.access_token);
+        setRefreshToken(authData.refresh_token);
+        router.replace('/(tabs)/home'); 
+      } else {
+        console.error("Invalid login data");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
     }
   };
 
   const logout = async () => {
-    await authLogout();
+    try {
+      await authLogout();
 
-    await deleteSecureItem("user");
-    await deleteSecureItem("access_token");
-    await deleteSecureItem("refresh_token");
-    setUser(null);
-    setAccessToken(null);
-    setRefreshToken(null);
-    router.navigate("/(tabs)/");
+      await deleteSecureItem("user");
+      await deleteSecureItem("access_token");
+      await deleteSecureItem("refresh_token");
+      setUser(null);
+      setAccessToken(null);
+      setRefreshToken(null);
+      router.replace("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (

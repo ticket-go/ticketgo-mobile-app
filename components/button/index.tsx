@@ -12,7 +12,7 @@ interface ButtonProps {
 export function Button({
   title,
   onPress,
-  backgroundColor = "#C1FF5B",
+  backgroundColor = "#CB1EE8",
   textColor = "#000",
 }: ButtonProps) {
   return (
