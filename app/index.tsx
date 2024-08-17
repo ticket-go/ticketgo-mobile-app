@@ -11,6 +11,7 @@ import { useAuth } from "../context/authContext";
 export default function SignIn() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   const { login } = useAuth();
 
@@ -18,7 +19,7 @@ export default function SignIn() {
     try {
       await login(username, password);
     } catch (error) {
-      console.error("Login failed", error);
+      setError("Usuário ou senha incorretos.");
     }
   };
 
@@ -32,17 +33,23 @@ export default function SignIn() {
         <Typography type="title" style={{ marginBottom: 30 }}>
           Ticket<SpanTitle>GO</SpanTitle>
         </Typography>
-        <Input
-          value={username}
-          onChangeText={setUsername}
-          placeholder="Usuário"
-        />
-        <Input
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Senha"
-          secureTextEntry={true}
-        />
+        <ViewInput>
+          <Input
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Usuário"
+          />
+          {error && <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>}
+        </ViewInput>
+        <ViewInput>
+          <Input
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Senha"
+            secureTextEntry={true}
+          />
+          {error && <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>}
+        </ViewInput>
 
         <Button title="Entrar" onPress={handleSubmit} />
 
@@ -59,6 +66,10 @@ export const Content = styled.View`
   align-items: center;
   justify-content: space-between;
   gap: 14px;
+`;
+
+export const ViewInput = styled.View`
+  width: 100%;
 `;
 
 export const Link = styled.Button`
