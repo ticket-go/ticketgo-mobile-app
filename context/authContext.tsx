@@ -64,12 +64,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(authData.user);
         setAccessToken(authData.access_token);
         setRefreshToken(authData.refresh_token);
-        router.replace('/(tabs)/home'); 
+        router.replace("/(tabs)/home");
       } else {
         console.error("Invalid login data");
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      throw error;
     }
   };
 

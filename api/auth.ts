@@ -28,7 +28,7 @@ export async function authLogin(
       console.error("Response not OK:", response.status);
     }
   } catch (error) {
-    console.error("Error during login:", error);
+    throw error;
   }
 }
 
