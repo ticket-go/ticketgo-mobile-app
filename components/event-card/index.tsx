@@ -3,6 +3,7 @@ import { Container, View, ImageEvent, TitleEvent, DateEvent } from "./styles";
 import Animated from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import { useEvent } from "@/context/eventContext";
+import { useEffect } from "react";
 interface EventCardProps {
   event: AppEvent;
 }
