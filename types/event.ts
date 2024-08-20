@@ -1,7 +1,7 @@
 import { Address } from "./address";
 import { Organization } from "./organization";
 
-export interface Event {
+export interface AppEvent {
   uuid: string;
   name: string;
   date: string;

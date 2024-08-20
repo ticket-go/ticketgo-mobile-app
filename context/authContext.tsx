@@ -37,20 +37,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(JSON.parse(storedUser));
         setAccessToken(storedAccessToken);
         setRefreshToken(storedRefreshToken);
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
       }
       setIsLoaded(true);
     };
 
     loadStoredAuth();
   }, []);
-
-  useEffect(() => {
-    if (user && accessToken && refreshToken) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [user, accessToken, refreshToken]);
 
   const login = async (username: string, password: string): Promise<void> => {
     try {
@@ -64,6 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(authData.user);
         setAccessToken(authData.access_token);
         setRefreshToken(authData.refresh_token);
+        setIsAuthenticated(true);
         router.replace("/(tabs)/home");
       } else {
         console.error("Invalid login data");
@@ -83,6 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(null);
       setAccessToken(null);
       setRefreshToken(null);
+      setIsAuthenticated(false);
       router.replace("/");
     } catch (error) {
       console.error("Logout failed:", error);

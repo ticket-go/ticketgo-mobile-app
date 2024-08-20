@@ -1,21 +1,24 @@
-import { Event } from "@/types/event";
+import { AppEvent } from "@/types/event";
 import { Container, View, ImageEvent, TitleEvent, DateEvent } from "./styles";
 import Animated from "react-native-reanimated";
 import { useRouter } from "expo-router";
+import { useEvent } from "@/context/eventContext";
 interface EventCardProps {
-  event: Event;
+  event: AppEvent;
 }
 
 export function EventCard({ event }: EventCardProps) {
   const router = useRouter();
+  const { setSelectedEvent } = useEvent();
 
-  const handleClickEvent = () => {
-    console.log("click");
+  const handleSubmit = () => {
+    setSelectedEvent(event);
+    router.push(`/event/${event.uuid}`);
   };
 
   return (
     <Animated.View>
-      <Container onPress={() => handleClickEvent()}>
+      <Container onPress={handleSubmit}>
         <View>
           <TitleEvent>{event.name}</TitleEvent>
           <DateEvent>{event.date}</DateEvent>

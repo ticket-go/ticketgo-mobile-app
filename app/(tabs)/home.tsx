@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 import { FlatList, ListRenderItem, ActivityIndicator } from "react-native";
 import { Typography } from "@/components/typography";
 import { EventCard } from "@/components/event-card";
-import { Event } from "@/types/event";
+import { AppEvent } from "@/types/event";
 import { api } from "@/services/api";
 import { Button } from "@/components/button";
 import { useAuth } from "@/context/authContext";
@@ -12,7 +12,7 @@ import { Container } from "@/components/container";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function HomeScreen() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<AppEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { logout } = useAuth();
@@ -21,7 +21,7 @@ export default function HomeScreen() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const response = await api.get<Event[]>("/events");
+        const response = await api.get<AppEvent[]>("/events");
         setEvents(response.data);
         return response;
       } catch (err) {
@@ -33,7 +33,7 @@ export default function HomeScreen() {
     fetchEvents();
   }, []);
 
-  const renderItem: ListRenderItem<Event> = ({ item }) => (
+  const renderItem: ListRenderItem<AppEvent> = ({ item }) => (
     <EventCard event={item} />
   );
 
@@ -56,7 +56,7 @@ export default function HomeScreen() {
   return (
     <Container>
       <View>
-          <Ionicons name="chevron-back" size={36} />
+        <Ionicons name="chevron-back" size={36} />
         <Typography type="title">Meus Eventos</Typography>
       </View>
       <FlatList
