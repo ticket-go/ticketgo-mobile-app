@@ -19,7 +19,6 @@ export async function authLogin(
       if (access_token && refresh_token) {
         await saveSecureItem("access_token", access_token);
         await saveSecureItem("refresh_token", refresh_token);
-        alert(`${user.first_name} seja-bem vindo!`);
       } else {
         console.error("Tokens are undefined, check the response structure.");
       }

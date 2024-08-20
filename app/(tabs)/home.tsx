@@ -1,22 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
-import {
-  FlatList,
-  ListRenderItem,
-  ActivityIndicator,
-  View,
-  Text,
-} from "react-native";
+import { FlatList, ListRenderItem, ActivityIndicator } from "react-native";
 import { Typography } from "@/components/typography";
 import { EventCard } from "@/components/event-card";
-import { Event } from "@/types/event";
+import { AppEvent } from "@/types/event";
 import { api } from "@/services/api";
 import { Button } from "@/components/button";
 import { useAuth } from "@/context/authContext";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { Container } from "@/components/container";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function HomeScreen() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<AppEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { logout } = useAuth();
@@ -25,7 +21,7 @@ export default function HomeScreen() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const response = await api.get<Event[]>("/events");
+        const response = await api.get<AppEvent[]>("/events");
         setEvents(response.data);
         return response;
       } catch (err) {
@@ -37,17 +33,7 @@ export default function HomeScreen() {
     fetchEvents();
   }, []);
 
-  const handleLogout = () => {
-    try {
-      logout();
-      router.replace("/");
-      alert("Logout realizado com sucesso");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-  };
-
-  const renderItem: ListRenderItem<Event> = ({ item }) => (
+  const renderItem: ListRenderItem<AppEvent> = ({ item }) => (
     <EventCard event={item} />
   );
 
@@ -69,43 +55,34 @@ export default function HomeScreen() {
 
   return (
     <Container>
-      <Button title="Logout" onPress={handleLogout} />
-      <Button title="Back to Index" onPress={() => router.push('/')} />
-
-      {/* <FlatList
+      <View>
+        <Ionicons name="chevron-back" size={36} />
+        <Typography type="title">Meus Eventos</Typography>
+      </View>
+      <FlatList
         data={events}
         renderItem={renderItem}
         keyExtractor={(item) => item.uuid}
-        ListHeaderComponent={() => <Title>Meus Eventos</Title>}
         style={{ width: "80%" }}
-        horizontal={true}
         ItemSeparatorComponent={() => <Separator />}
         snapToInterval={120}
-      /> */}
+      />
     </Container>
   );
 }
 
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
+const View = styled.View`
+  width: 100%;
+  flex-direction: row;
+  padding: 25px;
+  margin: 25px;
+  justify-content: start;
   align-items: center;
-  margin: 4px;
-`;
-
-const Content = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Title = styled.Text`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  gap: 10px;
 `;
 
 const Separator = styled.View`
   width: "50%";
   margin-inline: 10px;
+  margin-bottom: 70px;
 `;
