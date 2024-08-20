@@ -39,7 +39,8 @@
     "react-native-screens": "3.31.1",
     "react-native-web": "~0.19.10",
     "styled-components": "^6.1.12",
-    "expo-image": "~1.12.14"
+    "expo-image": "~1.12.14",
+    "expo-checkbox": "~3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
