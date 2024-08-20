@@ -19,6 +19,7 @@ export interface AppEvent {
   tickets_sold: number;
   tickets_available: number;
   half_tickets_available: number;
+  tickets_verified: number;
   address: Address;
   organization: Organization;
 }

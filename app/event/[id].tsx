@@ -35,7 +35,7 @@ export default function DetailEventScreen() {
       }
     }
     fetchEvents();
-  }, [tickets]);
+  }, []);
 
   if (tickets.length == 0) {
     return (
@@ -59,7 +59,8 @@ export default function DetailEventScreen() {
           </HeaderView>
           <HeaderView>
             <Typography type="default">
-              Total de ingressos verificados: xx/{selectedEvent?.tickets_sold}
+              Total de ingressos verificados: {selectedEvent?.tickets_verified}/
+              {selectedEvent?.tickets_sold}
             </Typography>
           </HeaderView>
 

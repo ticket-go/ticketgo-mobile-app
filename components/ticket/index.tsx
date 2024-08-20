@@ -5,6 +5,7 @@ import { Typography } from "../typography";
 import { Container, View } from "./styles";
 import { api } from "@/services/api";
 import { useEvent } from "@/context/eventContext";
+import { Alert } from "react-native";
 
 interface TicketProps {
   ticket: Ticket;
@@ -14,19 +15,27 @@ interface TicketProps {
 export function TicketCard({ ticket, checked }: TicketProps) {
   const [isChecked, setChecked] = useState(checked);
   const hashCompacted = ticket.hash.slice(0, 8);
-  const { selectedEvent } = useEvent();
+  const { selectedEvent, updateTicketsVerified } = useEvent();
 
   const eventUuid = selectedEvent?.uuid;
 
   const handleChangeCheckbox = async () => {
     try {
-      await api.put(
+      const response = await api.put(
         `check-ticket/events/${eventUuid}/tickets/${ticket.uuid}/verify/`,
         {
           hash: `${ticket.hash}`,
         }
       );
-      setChecked(!isChecked);
+      const newCheckedStatus = !isChecked;
+      setChecked(newCheckedStatus);
+      const newVerifiedCount = selectedEvent?.tickets_verified ?? 0;
+
+      updateTicketsVerified(
+        newCheckedStatus ? newVerifiedCount + 1 : newVerifiedCount - 1
+      );
+      Alert.alert(response.data.message);
+      return response;
     } catch (error) {
       console.error("Erro na requisição:", error);
     }
@@ -45,7 +54,6 @@ export function TicketCard({ ticket, checked }: TicketProps) {
           type="subtitle"
           style={{ color: isChecked ? "#ffffff" : "#CB1EE8" }}
         >
-          {" "}
           {ticket.user.first_name} {ticket.user.last_name}
         </Typography>
       </View>
@@ -53,6 +61,7 @@ export function TicketCard({ ticket, checked }: TicketProps) {
         color={isChecked ? "#000000" : "#CB1EE8"}
         value={isChecked}
         onValueChange={handleChangeCheckbox}
+        disabled={isChecked ? true : false}
       />
     </Container>
   );
