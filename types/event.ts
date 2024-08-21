@@ -1,5 +1,4 @@
 import { Address } from "./address";
-import { Organization } from "./organization";
 
 export interface AppEvent {
   uuid: string;
@@ -21,5 +20,4 @@ export interface AppEvent {
   half_tickets_available: number;
   tickets_verified: number;
   address: Address;
-  organization: Organization;
 }
