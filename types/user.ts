@@ -9,5 +9,4 @@ export interface User {
   gender?: string;
   privileged?: boolean;
   address?: number;
-  organization?: number;
 }
