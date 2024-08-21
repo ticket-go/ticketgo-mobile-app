@@ -1,8 +1,15 @@
 import styled from "styled-components/native";
 
-export const Container = styled.View`
-  width: "100%";
-  height: 500px;
+export const Container = styled.TouchableOpacity`
+  width: 80%;
+  height: 200px;
+`;
+
+export const View = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const ImageEvent = styled.ImageBackground`

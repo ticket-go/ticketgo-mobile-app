@@ -28,9 +28,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="eventos"
+        name="profile"
         options={{
-          title: "Eventos",
+          title: "Perfil",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "code-slash" : "code-slash-outline"}
