@@ -1,27 +1,22 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
+import { Container } from "@/components/container";
+import { useEffect, useState } from "react";
 import { FlatList, ListRenderItem, ActivityIndicator } from "react-native";
 import { Typography } from "@/components/typography";
 import { EventCard } from "@/components/event-card";
-import { AppEvent } from "@/types/event";
+import { Event } from "@/types/event";
 import { api } from "@/services/api";
-import { Button } from "@/components/button";
-import { useAuth } from "@/context/authContext";
-import { Link, useRouter } from "expo-router";
-import { Container } from "@/components/container";
-import { Ionicons } from "@expo/vector-icons";
+import { tintColorLight } from "@/styles/theme";
 
 export default function HomeScreen() {
-  const [events, setEvents] = useState<AppEvent[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { logout } = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const response = await api.get<AppEvent[]>("/events");
+        const response = await api.get<Event[]>("/events");
         setEvents(response.data);
         return response;
       } catch (err) {
@@ -33,14 +28,14 @@ export default function HomeScreen() {
     fetchEvents();
   }, []);
 
-  const renderItem: ListRenderItem<AppEvent> = ({ item }) => (
+  const renderItem: ListRenderItem<Event> = ({ item }) => (
     <EventCard event={item} />
   );
 
   if (loading) {
     return (
       <Container>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color={tintColorLight} />
       </Container>
     );
   }
@@ -55,34 +50,36 @@ export default function HomeScreen() {
 
   return (
     <Container>
-      <View>
-        <Ionicons name="chevron-back" size={36} />
-        <Typography type="title">Meus Eventos</Typography>
-      </View>
+      <ViewHeader>
+        <Typography type="subtitle">Meus Eventos</Typography>
+      </ViewHeader>
+
       <FlatList
         data={events}
         renderItem={renderItem}
         keyExtractor={(item) => item.uuid}
-        style={{ width: "80%" }}
+        style={{
+          width: "95%",
+        }}
         ItemSeparatorComponent={() => <Separator />}
-        snapToInterval={120}
+        ListFooterComponent={<FooterSpacing />}
       />
     </Container>
   );
 }
 
-const View = styled.View`
+const ViewHeader = styled.View`
   width: 100%;
-  flex-direction: row;
-  padding: 25px;
-  margin: 25px;
-  justify-content: start;
-  align-items: center;
-  gap: 10px;
+  padding: 20px 20px;
+  background-color: #f8f9fa;
+  align-items: flex-start;
+  margin-top: 20px;
 `;
 
 const Separator = styled.View`
-  width: "50%";
-  margin-inline: 10px;
-  margin-bottom: 70px;
+  height: 20px;
+`;
+
+const FooterSpacing = styled.View`
+  height: 40px;
 `;

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import "react-native-reanimated";
 import {
   DarkTheme,
   DefaultTheme,
@@ -6,14 +8,10 @@ import {
 import { useFonts } from "expo-font";
 import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
-
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuthProvider, useAuth } from "@/context/authContext";
 import { EventProvider } from "@/context/eventContext";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -61,6 +59,7 @@ const RootStack = () => {
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="event/[id]" />
+      <Stack.Screen name="scanner" />
       <Stack.Screen name="+not-found" />
     </Stack>
   );

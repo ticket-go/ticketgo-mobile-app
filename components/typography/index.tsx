@@ -5,7 +5,14 @@ import { Text as RNText, type TextProps, StyleSheet } from "react-native";
 export type TypographyProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
+  type?:
+    | "default"
+    | "title"
+    | "defaultSemiBold"
+    | "subtitle"
+    | "link"
+    | "button";
+  color?: string;
 };
 
 export function Typography({

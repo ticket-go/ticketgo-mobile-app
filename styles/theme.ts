@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-const tintColorLight = "#CB1EE8";
+export const tintColorLight = "#CB1EE8";
 const tintColorDark = "#fff";
 
 export const Colors = {
