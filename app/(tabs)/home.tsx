@@ -1,13 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import { FlatList, ListRenderItem, ActivityIndicator } from "react-native";
 import { Typography } from "@/components/typography";
 import { EventCard } from "@/components/event-card";
 import { AppEvent } from "@/types/event";
 import { api } from "@/services/api";
-import { Button } from "@/components/button";
-import { useAuth } from "@/context/authContext";
-import { Link, useRouter } from "expo-router";
 import { Container } from "@/components/container";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -15,8 +12,6 @@ export default function HomeScreen() {
   const [events, setEvents] = useState<AppEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { logout } = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
     async function fetchEvents() {
