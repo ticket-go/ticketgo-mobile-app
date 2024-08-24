@@ -21,7 +21,7 @@ export default function HomeScreen() {
   return (
     <Container>
       <Button title="Logout" onPress={handleLogout} />
-      <Button title="Back to Index" onPress={() => router.push("/")} />
+      <Button title="Back to Index" onPress={() => router.push("/(tabs)/home")} />
     </Container>
   );
 }
