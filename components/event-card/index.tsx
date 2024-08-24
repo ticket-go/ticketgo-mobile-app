@@ -24,7 +24,7 @@ export function EventCard({ event }: EventCardProps) {
           <TitleEvent>{event.name}</TitleEvent>
           <DateEvent>{event.date}</DateEvent>
         </View>
-        <ImageEvent source={{ uri: "https://picsum.photos/400/300" }} />
+        <ImageEvent source={{ uri: event.image_url }} />
       </Container>
     </Animated.View>
   );
