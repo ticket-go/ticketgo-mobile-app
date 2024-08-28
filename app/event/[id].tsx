@@ -9,11 +9,13 @@ import { Typography } from "@/components/typography";
 import { TicketCard } from "@/components/ticket";
 import { Ticket } from "@/types/ticket";
 import { api } from "@/services/api";
+import { useAuth } from "@/context/authContext";
 
 import styled from "styled-components/native";
 
 export default function DetailEventScreen() {
   const router = useRouter();
+  const { accessToken } = useAuth();
   const { selectedEvent } = useEvent();
   const eventUuid = selectedEvent?.uuid;
 
@@ -28,7 +30,11 @@ export default function DetailEventScreen() {
   useEffect(() => {
     async function fetchTickets() {
       try {
-        const response = await api.get(`/events/${eventUuid}/tickets/`);
+        const response = await api.get(`/events/${eventUuid}/tickets/`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         setTickets(response.data);
       } catch (err) {
         setError("Erro ao carregar ingressos");

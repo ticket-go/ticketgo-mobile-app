@@ -1,12 +1,16 @@
 import styled from "styled-components/native";
-
 import { useAuth } from "@/context/authContext";
 import { useRouter } from "expo-router";
-import { Button } from "@/components/button";
+import React from "react";
+import { Typography } from "@/components/typography";
+import { SpanTitle } from "@/styles/theme";
+import { Feather } from "@expo/vector-icons";
 
 export default function HomeScreen() {
   const { logout } = useAuth();
   const router = useRouter();
+  const avatarImage = require("@/assets/images/avatar-user.png");
+  const { user } = useAuth();
 
   const handleLogout = () => {
     try {
@@ -20,16 +24,73 @@ export default function HomeScreen() {
 
   return (
     <Container>
-      <Button title="Logout" onPress={handleLogout} />
-      <Button title="Back to Index" onPress={() => router.push("/")} />
+      <TopSection>
+        <View>
+          <Typography type="title">
+            Ticket<SpanTitle>GO</SpanTitle>
+          </Typography>
+          <ButtonWrapper>
+            <LogoutIcon
+              name="log-out"
+              size={24}
+              color="black"
+              onPress={handleLogout}
+            />
+          </ButtonWrapper>
+        </View>
+      </TopSection>
+
+      <BottomSection>
+        <Typography type="title" style={{ marginBottom: 30 }}>
+          {user?.first_name ?? "Usuário"}
+        </Typography>
+        <ImageEvent source={avatarImage} />
+      </BottomSection>
     </Container>
   );
 }
 
 const Container = styled.View`
-  flex: 1;
   width: 100%;
+  height: 100%;
   justify-content: center;
   align-items: center;
-  margin: 4px;
+`;
+
+const TopSection = styled.View`
+  width: 100%;
+  height: 5%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const BottomSection = styled.View`
+  width: 100%;
+  height: 80%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonWrapper = styled.View`
+  width: 40%;
+  align-items: flex-end;
+`;
+
+const LogoutIcon = styled(Feather)`
+  margin: 10px;
+`;
+
+const View = styled.View`
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+export const ImageEvent = styled.ImageBackground`
+  width: 350px;
+  height: 350px;
+  border-radius: 10px;
+  overflow: hidden;
 `;
