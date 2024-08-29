@@ -45,7 +45,7 @@ export default function TabLayout() {
           title: "Perfil",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "person-sharp" : "person-outline"}
+              name={focused ? "person" : "person-outline"}
               color={color}
             />
           ),

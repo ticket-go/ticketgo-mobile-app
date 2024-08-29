@@ -9,12 +9,14 @@ import { Typography } from "@/components/typography";
 import { TicketCard } from "@/components/ticket";
 import { Ticket } from "@/types/ticket";
 import { api } from "@/services/api";
+import { useAuth } from "@/context/authContext";
 
 import styled from "styled-components/native";
 import { useAuth } from "@/context/authContext";
 
 export default function DetailEventScreen() {
   const router = useRouter();
+  const { accessToken } = useAuth();
   const { selectedEvent } = useEvent();
   const eventUuid = selectedEvent?.uuid;
   const { accessToken } = useAuth();
