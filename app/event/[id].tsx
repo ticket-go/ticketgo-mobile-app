@@ -11,11 +11,13 @@ import { Ticket } from "@/types/ticket";
 import { api } from "@/services/api";
 
 import styled from "styled-components/native";
+import { useAuth } from "@/context/authContext";
 
 export default function DetailEventScreen() {
   const router = useRouter();
   const { selectedEvent } = useEvent();
   const eventUuid = selectedEvent?.uuid;
+  const { accessToken } = useAuth();
 
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Estado de carregamento
@@ -28,7 +30,12 @@ export default function DetailEventScreen() {
   useEffect(() => {
     async function fetchTickets() {
       try {
-        const response = await api.get(`/events/${eventUuid}/tickets/`);
+        const response = await api.get(`/events/${eventUuid}/tickets/`, {
+          headers: {
+            "Authorization": `Bearer ${accessToken}`
+          }
+        }
+        );
         setTickets(response.data);
       } catch (err) {
         setError("Erro ao carregar ingressos");
