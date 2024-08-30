@@ -7,12 +7,6 @@ interface ContainerProps extends ViewProps {
   darkColor?: string;
 }
 
-const StyledContainer = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
-
 export function Container({
   style,
   lightColor,
@@ -28,3 +22,9 @@ export function Container({
     <StyledContainer style={[{ backgroundColor }, style]} {...otherProps} />
   );
 }
+
+const StyledContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;

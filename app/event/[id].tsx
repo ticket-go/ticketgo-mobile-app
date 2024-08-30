@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, ListRenderItem, Text } from "react-native";
+import {
+  FlatList,
+  ListRenderItem,
+  ActivityIndicator,
+  View,
+  Alert,
+} from "react-native";
 import { useRouter, Link } from "expo-router";
-import { Button } from "@/components/button";
 import { useEvent } from "@/context/eventContext";
 import { Container } from "@/components/container";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,24 +14,26 @@ import { Typography } from "@/components/typography";
 import { TicketCard } from "@/components/ticket";
 import { Ticket } from "@/types/ticket";
 import { api } from "@/services/api";
-import { useAuth } from "@/context/authContext";
+import { Colors } from "@/styles/theme";
 
 import styled from "styled-components/native";
+import { useAuth } from "@/context/authContext";
+import { usePermissions } from "@/context/permissionsContext";
 
 export default function DetailEventScreen() {
   const router = useRouter();
-  const { accessToken } = useAuth();
   const { selectedEvent } = useEvent();
   const eventUuid = selectedEvent?.uuid;
+  const { accessToken } = useAuth();
+  const { isPermissionGranted, requestPermission, setIsPermissionGranted } =
+    usePermissions();
 
   const [tickets, setTickets] = useState<Ticket[]>([]);
-
-  const renderItem: ListRenderItem<Ticket> = ({ item }) => {
-    return <TicketCard ticket={item} checked={item.verified} />;
-  };
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchEvents() {
+    async function fetchTickets() {
       try {
         const response = await api.get(`/events/${eventUuid}/tickets/`, {
           headers: {
@@ -34,74 +41,153 @@ export default function DetailEventScreen() {
           },
         });
         setTickets(response.data);
-        return response;
       } catch (err) {
-        console.error("Failed to load events", err);
+        setError("Erro ao carregar ingressos");
+      } finally {
+        setLoading(false);
       }
     }
-    fetchEvents();
-  }, []);
+    fetchTickets();
+  }, [eventUuid]);
 
-  if (tickets.length == 0) {
+  const handleQRButtonPress = async () => {
+    if (isPermissionGranted) {
+      router.push("/scanner");
+    } else {
+      const permissionResponse = await requestPermission();
+      if (permissionResponse && permissionResponse.granted) {
+        setIsPermissionGranted(true);
+        router.push("/scanner");
+      } else {
+        Alert.alert(
+          "Permissão Necessária",
+          "É necessário conceder permissão para usar a câmera.",
+          [{ text: "OK" }]
+        );
+      }
+    }
+  };
+
+  const renderItem: ListRenderItem<Ticket> = ({ item }) => {
+    return <TicketCard ticket={item} checked={item.verified} />;
+  };
+
+  if (loading) {
     return (
       <CenteredView>
-        <Text>Nenhum ingresso disponível</Text>
-        <Button
-          title="Back to Index"
-          onPress={() => router.push("/(tabs)/home")}
-        />
+        <ActivityIndicator size="large" color="#CB1EE8" />
+        <Typography type="subtitle" style={{ marginTop: 10 }}>
+          Carregando ingressos...
+        </Typography>
       </CenteredView>
     );
-  } else {
-    return (
-      <Container>
-        <CenteredContent>
-          <HeaderView>
-            <Link href="/(tabs)/home">
-              <Ionicons name="chevron-back" size={36} />
-            </Link>
-            <Typography type="title"> {selectedEvent?.name}</Typography>
-          </HeaderView>
-          <HeaderView>
-            <Typography type="default">
-              Total de ingressos verificados: {selectedEvent?.tickets_verified}/
-              {selectedEvent?.tickets_sold}
-            </Typography>
-          </HeaderView>
+  }
 
-          <FlatListContainer>
-            <FlatList
-              data={tickets}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.uuid}
-              style={{ width: "100%" }}
-              contentContainerStyle={{ alignItems: "center" }}
-              ItemSeparatorComponent={() => <Separator />}
-              snapToInterval={120}
-            />
-          </FlatListContainer>
-        </CenteredContent>
-      </Container>
+  if (error) {
+    return (
+      <CenteredView>
+        <MessageNotTickets>{error}</MessageNotTickets>
+        <ButtonBack onPress={() => router.back()}>
+          <Typography type="button" style={{ color: "#fff" }}>
+            Voltar
+          </Typography>
+        </ButtonBack>
+      </CenteredView>
     );
   }
+
+  if (tickets.length === 0) {
+    return (
+      <CenteredView>
+        <MessageNotTickets>Nenhum ingresso disponível</MessageNotTickets>
+        <ButtonBack onPress={() => router.back()}>
+          <Typography type="button" style={{ color: "#fff" }}>
+            Voltar
+          </Typography>
+        </ButtonBack>
+      </CenteredView>
+    );
+  }
+
+  return (
+    <Container>
+      <ViewHeader>
+        <Link href="/(tabs)/home">
+          <Ionicons name="chevron-back" size={28} color="#CB1EE8" />
+        </Link>
+        <TitleContainer>
+          <Typography type="subtitle">{selectedEvent?.name}</Typography>
+        </TitleContainer>
+      </ViewHeader>
+
+      <CounterTickets>
+        <Typography type="default" style={{ fontWeight: "600", fontSize: 16 }}>
+          Total de ingressos verificados:{" "}
+          <Highlight>{selectedEvent?.tickets_verified}</Highlight>/
+          {selectedEvent?.tickets_sold}
+        </Typography>
+      </CounterTickets>
+
+      <FlatListContainer>
+        <FlatList
+          data={tickets}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.uuid}
+          style={{ width: "100%" }}
+          contentContainerStyle={{ alignItems: "center" }}
+          ItemSeparatorComponent={() => <Separator />}
+          snapToInterval={120}
+        />
+      </FlatListContainer>
+
+      <ViewScanner onPress={handleQRButtonPress}>
+        <Ionicons name="qr-code" size={32} color="#ffff" />
+      </ViewScanner>
+    </Container>
+  );
 }
 
-const HeaderView = styled.View`
-  width: 85%;
+// Styles
+
+const ViewHeader = styled.View`
+  width: 100%;
+  padding: 20px;
+  margin-top: 40px;
   flex-direction: row;
-  justify-content: start;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  justify-content: space-between;
 `;
 
-const CenteredView = styled.View`
+const ViewScanner = styled.TouchableOpacity`
+  background-color: #cb1ee8;
+  padding: 15px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 15px;
+`;
+
+const TitleContainer = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
+  margin-left: -40px;
 `;
 
-const CenteredContent = styled.View`
+const CounterTickets = styled.View`
+  width: 100%;
+  padding: 0px 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+`;
+
+const Highlight = styled.Text`
+  color: #cb1ee8;
+  font-weight: bold;
+`;
+
+const CenteredView = styled.View`
   flex: 1;
   width: 100%;
   align-items: center;
@@ -110,7 +196,21 @@ const CenteredContent = styled.View`
   padding-bottom: 20px;
 `;
 
+const MessageNotTickets = styled.Text`
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+`;
+
+const ButtonBack = styled.TouchableOpacity`
+  background-color: #cb1ee8;
+  padding: 15px 40px;
+  border-radius: 10px;
+  margin-top: 10px;
+`;
+
 const FlatListContainer = styled.View`
+  flex: 1;
   height: 80%;
   width: 100%;
   margin: 5px;

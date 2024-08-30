@@ -13,33 +13,9 @@ interface TicketProps {
 }
 
 export function TicketCard({ ticket, checked }: TicketProps) {
-  const [isChecked, setChecked] = useState(checked);
+  const [isChecked] = useState(checked);
   const hashCompacted = ticket.hash.slice(0, 8);
-  const { selectedEvent, updateTicketsVerified } = useEvent();
 
-  const eventUuid = selectedEvent?.uuid;
-
-  const handleChangeCheckbox = async () => {
-    try {
-      const response = await api.put(
-        `check-ticket/events/${eventUuid}/tickets/${ticket.uuid}/verify/`,
-        {
-          hash: `${ticket.hash}`,
-        }
-      );
-      const newCheckedStatus = !isChecked;
-      setChecked(newCheckedStatus);
-      const newVerifiedCount = selectedEvent?.tickets_verified ?? 0;
-
-      updateTicketsVerified(
-        newCheckedStatus ? newVerifiedCount + 1 : newVerifiedCount - 1
-      );
-      Alert.alert(response.data.message);
-      return response;
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-    }
-  };
   return (
     <Container checked={isChecked}>
       <View>
@@ -60,7 +36,6 @@ export function TicketCard({ ticket, checked }: TicketProps) {
       <Checkbox
         color={isChecked ? "#000000" : "#CB1EE8"}
         value={isChecked}
-        onValueChange={handleChangeCheckbox}
         disabled={isChecked ? true : false}
       />
     </Container>
