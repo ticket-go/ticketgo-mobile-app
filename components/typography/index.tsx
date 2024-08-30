@@ -11,7 +11,8 @@ export type TypographyProps = TextProps & {
     | "defaultSemiBold"
     | "subtitle"
     | "link"
-    | "button";
+    | "button"
+    | "bold"
   color?: string;
 };
 
@@ -33,6 +34,7 @@ export function Typography({
         type === "defaultSemiBold" && styles.defaultSemiBold,
         type === "subtitle" && styles.subtitle,
         type === "link" && styles.link,
+        type === "bold" && styles.bold,  
         style,
       ]}
       {...rest}
@@ -42,7 +44,7 @@ export function Typography({
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: 24,
   },
   defaultSemiBold: {
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     lineHeight: 32,
   },
+
   subtitle: {
     fontSize: 20,
     fontWeight: "bold",
@@ -63,5 +66,8 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     fontSize: 16,
     color: "#0a7ea4",
+  },
+  bold: {
+    fontWeight: 'bold', 
   },
 });
