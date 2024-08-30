@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, ListRenderItem, ActivityIndicator } from "react-native";
+import {
+  FlatList,
+  ListRenderItem,
+  ActivityIndicator,
+  View,
+  Alert,
+} from "react-native";
 import { useRouter, Link } from "expo-router";
-import { Button } from "@/components/button";
 import { useEvent } from "@/context/eventContext";
 import { Container } from "@/components/container";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,44 +14,64 @@ import { Typography } from "@/components/typography";
 import { TicketCard } from "@/components/ticket";
 import { Ticket } from "@/types/ticket";
 import { api } from "@/services/api";
+import { Colors } from "@/styles/theme";
 
 import styled from "styled-components/native";
 import { useAuth } from "@/context/authContext";
+import { usePermissions } from "@/context/permissionsContext";
 
 export default function DetailEventScreen() {
   const router = useRouter();
   const { selectedEvent } = useEvent();
   const eventUuid = selectedEvent?.uuid;
   const { accessToken } = useAuth();
+  const { isPermissionGranted, requestPermission, setIsPermissionGranted } =
+    usePermissions();
 
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Estado de carregamento
-  const [error, setError] = useState<string | null>(null); // Estado de erro
-
-  const renderItem: ListRenderItem<Ticket> = ({ item }) => {
-    return <TicketCard ticket={item} checked={item.verified} />;
-  };
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchTickets() {
       try {
         const response = await api.get(`/events/${eventUuid}/tickets/`, {
           headers: {
-            "Authorization": `Bearer ${accessToken}`
-          }
-        }
-        );
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         setTickets(response.data);
       } catch (err) {
         setError("Erro ao carregar ingressos");
       } finally {
-        setLoading(false); // Indica que a requisição terminou
+        setLoading(false);
       }
     }
     fetchTickets();
   }, [eventUuid]);
 
-  // Renderiza o estado de carregamento
+  const handleQRButtonPress = async () => {
+    if (isPermissionGranted) {
+      router.push("/scanner");
+    } else {
+      const permissionResponse = await requestPermission();
+      if (permissionResponse && permissionResponse.granted) {
+        setIsPermissionGranted(true);
+        router.push("/scanner");
+      } else {
+        Alert.alert(
+          "Permissão Necessária",
+          "É necessário conceder permissão para usar a câmera.",
+          [{ text: "OK" }]
+        );
+      }
+    }
+  };
+
+  const renderItem: ListRenderItem<Ticket> = ({ item }) => {
+    return <TicketCard ticket={item} checked={item.verified} />;
+  };
+
   if (loading) {
     return (
       <CenteredView>
@@ -114,9 +139,15 @@ export default function DetailEventScreen() {
           snapToInterval={120}
         />
       </FlatListContainer>
+
+      <ViewScanner onPress={handleQRButtonPress}>
+        <Ionicons name="qr-code" size={32} color="#ffff" />
+      </ViewScanner>
     </Container>
   );
 }
+
+// Styles
 
 const ViewHeader = styled.View`
   width: 100%;
@@ -125,6 +156,15 @@ const ViewHeader = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+`;
+
+const ViewScanner = styled.TouchableOpacity`
+  background-color: #cb1ee8;
+  padding: 15px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 15px;
 `;
 
 const TitleContainer = styled.View`
@@ -170,6 +210,7 @@ const ButtonBack = styled.TouchableOpacity`
 `;
 
 const FlatListContainer = styled.View`
+  flex: 1;
   height: 80%;
   width: 100%;
   margin: 5px;

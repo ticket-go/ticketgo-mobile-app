@@ -11,6 +11,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuthProvider, useAuth } from "@/context/authContext";
 import { EventProvider } from "@/context/eventContext";
+import { PermissionsProvider } from "@/context/permissionsContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,11 +32,13 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <EventProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <RootStack />
-        </ThemeProvider>
+        <PermissionsProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <RootStack />
+          </ThemeProvider>
+        </PermissionsProvider>
       </EventProvider>
     </AuthProvider>
   );

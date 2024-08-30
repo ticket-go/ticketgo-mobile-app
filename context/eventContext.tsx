@@ -1,9 +1,9 @@
-import { AppEvent } from "@/types/event";
+import { Event } from "@/types/event";
 import { createContext, useContext, useState } from "react";
 
 interface EventContextType {
-  selectedEvent: AppEvent | null;
-  setSelectedEvent: (event: AppEvent) => void;
+  selectedEvent: Event | null;
+  setSelectedEvent: (event: Event) => void;
   updateTicketsVerified: (count: number) => void;
 }
 
@@ -12,7 +12,7 @@ const EventContext = createContext<EventContextType | undefined>(undefined);
 export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [selectedEvent, setSelectedEvent] = useState<AppEvent | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   const updateTicketsVerified = (count: number) => {
     setSelectedEvent((prev) => {
