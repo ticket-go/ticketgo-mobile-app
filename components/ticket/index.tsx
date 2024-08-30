@@ -3,9 +3,6 @@ import { Ticket } from "@/types/ticket";
 import { useState } from "react";
 import { Typography } from "../typography";
 import { Container, View } from "./styles";
-import { api } from "@/services/api";
-import { useEvent } from "@/context/eventContext";
-import { Alert } from "react-native";
 
 interface TicketProps {
   ticket: Ticket;
