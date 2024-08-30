@@ -5,12 +5,11 @@ import React from "react";
 import { Typography } from "@/components/typography";
 import { SpanTitle } from "@/styles/theme";
 import { Feather } from "@expo/vector-icons";
+import { ProfileCard } from "@/components/profile-card";
 
 export default function HomeScreen() {
-  const { logout } = useAuth();
   const router = useRouter();
-  const avatarImage = require("@/assets/images/avatar-user.png");
-  const { user } = useAuth();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     try {
@@ -40,12 +39,7 @@ export default function HomeScreen() {
         </View>
       </TopSection>
 
-      <BottomSection>
-        <Typography type="title" style={{ marginBottom: 30 }}>
-          {user?.first_name ?? "Usuário"}
-        </Typography>
-        <ImageEvent source={avatarImage} />
-      </BottomSection>
+      <ProfileCard />
     </Container>
   );
 }
