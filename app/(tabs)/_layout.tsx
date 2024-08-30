@@ -27,19 +27,6 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="qrcode"
-        options={{
-          title: "QR Code",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "qr-code" : "qr-code-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
         name="profile"
         options={{
           title: "Perfil",

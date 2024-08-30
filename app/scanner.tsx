@@ -12,10 +12,13 @@ import {
 } from "react-native";
 import { Overlay } from "@/components/overlay";
 import { Ionicons } from "@expo/vector-icons";
+import { useEvent } from "@/context/eventContext";
 
 export default function Scanner() {
   const qrLock = useRef(false);
   const appState = useRef(AppState.currentState);
+  const { selectedEvent } = useEvent();
+  const id = selectedEvent?.uuid;
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
@@ -59,9 +62,14 @@ export default function Scanner() {
 
   return (
     <SafeAreaView style={StyleSheet.absoluteFillObject}>
-      <Link href="/(tabs)/home" style={styles.backButton}>
-        <Ionicons name="chevron-back" size={28} color="#ffffff" />
-      </Link>
+      {id && (
+        <Link
+          href={{ pathname: "/event/[id]", params: { id } }}
+          style={styles.backButton}
+        >
+          <Ionicons name="chevron-back" size={28} color="#ffffff" />
+        </Link>
+      )}
 
       {Platform.OS === "android" ? <StatusBar hidden /> : null}
       <CameraView
