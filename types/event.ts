@@ -1,6 +1,6 @@
 import { Address } from "./address";
 
-export interface AppEvent {
+export interface Event {
   uuid: string;
   name: string;
   date: string;
@@ -11,6 +11,7 @@ export interface AppEvent {
   status: string;
   status_display: string;
   image: string;
+  image_url: string;
   ticket_value: string;
   half_ticket_value: string;
   ticket_quantity: number;
