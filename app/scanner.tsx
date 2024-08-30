@@ -15,14 +15,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { useEvent } from "@/context/eventContext";
 import { api } from "@/services/api";
 import { useAuth } from "@/context/authContext";
+import { AxiosError } from "axios";
 
 export default function Scanner() {
+  const router = useRouter();
   const qrLock = useRef(false);
   const appState = useRef(AppState.currentState);
   const { selectedEvent, updateTicketsVerified } = useEvent();
   const { accessToken } = useAuth();
   const id = selectedEvent?.uuid;
-  const router = useRouter();
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
@@ -53,9 +54,6 @@ export default function Scanner() {
         hash = data;
       }
 
-      // Alert.alert("Hash encontrado", hash || "Nenhum hash encontrado");
-
-      // Fazer requisição para endpoint...
       try {
         const response = await api.put(
           `check-ticket/events/${id}/`,
@@ -69,33 +67,44 @@ export default function Scanner() {
           }
         );
 
+        var message = response.data.message;
+
         const newVerifiedCount = selectedEvent?.tickets_verified ?? 0;
         updateTicketsVerified(newVerifiedCount + 1);
 
-        // testar pra ver se quando fecha o Alert redireciona... 
-        Alert.alert(
-          "Sucesso!", 
-          response.data.message,
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                router.push(`/event/${id}`);
+        Alert.alert("TicketGo informa:", message, [
+          {
+            text: "OK",
+            onPress: () => {
+              router.push(`/event/${id}`);
+              setTimeout(() => {
                 qrLock.current = false;
-              },
+              }, 1000);
             },
-          ]
-        );
+          },
+        ]);
 
         return response;
       } catch (error) {
-        console.error("Erro na requisição:", error);
-      }
+        let errorMessage = "";
 
-      // // Desbloquear o scanner após um tempo
-      // setTimeout(() => {
-      //   qrLock.current = false;
-      // }, 500);
+        if (error instanceof AxiosError) {
+          errorMessage = error.response?.data?.message;
+        } else {
+          errorMessage = "Ocorreu um erro inesperado.";
+        }
+
+        Alert.alert("TicketGo informa:", errorMessage, [
+          {
+            text: "OK",
+            onPress: () => {
+              setTimeout(() => {
+                qrLock.current = false;
+              }, 1000);
+            },
+          },
+        ]);
+      }
     }
   };
 
