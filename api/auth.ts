@@ -1,13 +1,15 @@
+import { Alert } from "react-native";
 import { api } from "../services/api";
 import { Auth } from "../types/auth";
 import { saveSecureItem, deleteSecureItem, getSecureItem } from "@/lib/utils";
+import { AxiosError } from "axios";
 
 export async function authLogin(
   username: string,
   password: string
 ): Promise<Auth | void> {
   try {
-    const response = await api.post("/auth/login/", {
+    const response = await api.post("/auth/login-mobile/", {
       username,
       password,
     });
@@ -27,6 +29,13 @@ export async function authLogin(
       console.error("Response not OK:", response.status);
     }
   } catch (error) {
+    if (
+      error instanceof AxiosError &&
+      error.response &&
+      error.response.status === 401
+    ) {
+      Alert.alert("TicketGo informa", "Usuário não pode entrar nesse sistema!");
+    }
     throw error;
   }
 }
