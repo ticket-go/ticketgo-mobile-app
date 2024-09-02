@@ -5,13 +5,6 @@ module.exports = function (api) {
     plugins: [
       "react-native-reanimated/plugin",
       "styled-components",
-      [
-        "module:react-native-dotenv",
-        {
-          moduleName: "@env",
-          path: ".env",
-        },
-      ],
     ],
   };
 };
