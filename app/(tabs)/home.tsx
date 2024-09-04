@@ -6,7 +6,7 @@ import { Typography } from "@/components/typography";
 import { EventCard } from "@/components/event-card";
 import { Event } from "@/types/event";
 import { api } from "@/services/api";
-import { tintColorLight } from "@/styles/theme";
+import { tintColorLight } from "@/styles/colors";
 
 export default function HomeScreen() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -71,9 +71,10 @@ export default function HomeScreen() {
 const ViewHeader = styled.View`
   width: 100%;
   padding: 20px 20px;
-  background-color: #f8f9fa;
+  background-color: transparent;
   align-items: flex-start;
-  margin-top: 20px;
+  justify-content: center;
+  margin-top: 40px;
 `;
 
 const Separator = styled.View`

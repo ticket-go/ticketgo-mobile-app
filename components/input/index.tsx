@@ -14,7 +14,8 @@ export function Input({
   placeholder,
   secureTextEntry = false,
 }: InputProps) {
-  const placeholderColor = useThemeColor({}, "text");
+  const textColor = useThemeColor({}, "text");
+  const borderColor = useThemeColor({}, "icon");
 
   return (
     <InputContainer
@@ -22,7 +23,9 @@ export function Input({
       onChangeText={onChangeText}
       placeholder={placeholder}
       secureTextEntry={secureTextEntry}
-      placeholderTextColor={placeholderColor}
+      placeholderTextColor={textColor}
+      themeColor={textColor}
+      borderColor={borderColor}
     />
   );
 }

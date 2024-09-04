@@ -1,5 +1,5 @@
-import { useThemeColor } from "../../hooks/useThemeColor";
 import React from "react";
+import { useThemeColor } from "../../hooks/useThemeColor";
 import { Text as RNText, type TextProps, StyleSheet } from "react-native";
 
 export type TypographyProps = TextProps & {
@@ -12,7 +12,7 @@ export type TypographyProps = TextProps & {
     | "subtitle"
     | "link"
     | "button"
-    | "bold"
+    | "bold";
   color?: string;
 };
 
@@ -21,20 +21,24 @@ export function Typography({
   lightColor,
   darkColor,
   type = "default",
+  color,
   ...rest
 }: TypographyProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-
+  const themeColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "text"
+  );
+  const textColor = color || themeColor;
   return (
     <RNText
       style={[
-        { color },
+        { color: textColor },
         type === "default" && styles.default,
         type === "title" && styles.title,
         type === "defaultSemiBold" && styles.defaultSemiBold,
         type === "subtitle" && styles.subtitle,
         type === "link" && styles.link,
-        type === "bold" && styles.bold,  
+        type === "bold" && styles.bold,
         style,
       ]}
       {...rest}
@@ -68,6 +72,6 @@ const styles = StyleSheet.create({
     color: "#0a7ea4",
   },
   bold: {
-    fontWeight: 'bold', 
+    fontWeight: "bold",
   },
 });

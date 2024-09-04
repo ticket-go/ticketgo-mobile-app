@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/styles/theme";
+import { Colors } from "@/styles/colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function TabLayout() {
