@@ -1,81 +1,104 @@
+import React, { useState } from "react";
 import styled from "styled-components/native";
 import { Typography } from "../typography";
 import { Image } from "expo-image";
 import { useAuth } from "@/context/authContext";
+import { Accordion } from "../acordion";
 
 export function ProfileCard() {
   const { user } = useAuth();
-  const avatarImage = require("@/assets/images/avatar-user.png");
+  const avatarImage = require("@/assets/images/avatar.png");
+
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
+  const toggleAccordion = (accordion: string) => {
+    setOpenAccordion(openAccordion === accordion ? null : accordion);
+  };
 
   return (
-    <BottomSection>
-      <Typography
-        type="title"
-        style={{ marginBottom: 30, textAlign: "center" }}
-      >
-        {user?.first_name ?? "Usuário"}
-      </Typography>
+    <ProfileContainer>
+      <TopSection>
+        <Typography
+          type="title"
+          style={{ marginBottom: 24, textAlign: "center" }}
+        >
+          {user?.username}
+        </Typography>
 
-      {user?.image ? (
-        <Image
-          source={user.image}
-          style={{ width: 300, height: 300, marginBottom: 20 }}
-        />
-      ) : (
-        <ImageEvent source={avatarImage} />
-      )}
+        {user?.image ? (
+          <Image
+            source={!user.image ? { uri: user.image } : avatarImage}
+            style={{ width: 150, height: 150, marginBottom: 20 }}
+          />
+        ) : (
+          <ImageEvent source={avatarImage} />
+        )}
+      </TopSection>
 
-      <Typography>
-        <Typography type="bold">CPF: </Typography>
-        {user?.cpf ?? "CPF não cadastrado"}
-      </Typography>
+      <BottomSection>
+        <Accordion
+          title="Informações Pessoais"
+          isOpen={openAccordion === "personal"}
+          onPress={() => toggleAccordion("personal")}
+        >
+          <Typography>
+            <Typography type="bold">Nome: </Typography>
+            {user?.first_name} {user?.last_name}
+          </Typography>
 
-      <Typography>
-        <Typography type="bold">E-mail: </Typography>
-        {user?.email ?? "Email não cadastrado"}
-      </Typography>
+          <Typography>
+            <Typography type="bold">CPF: </Typography>
+            {user?.cpf}
+          </Typography>
 
-      <Typography type="subtitle" style={{ marginTop: 10 }}>
-        Endereço:
-      </Typography>
+          <Typography>
+            <Typography type="bold">E-mail: </Typography>
+            {user?.email}
+          </Typography>
 
-      <Typography>
-        <Typography type="bold">Local: </Typography>
-        {user?.address
-          ? `${user.address.street ?? "Rua não cadastrada"}, nº${
-              user.address.number ?? "Não cadastrado"
-            }`
-          : "Endereço não cadastrado"}
-      </Typography>
+          <Typography>
+            <Typography type="bold">Telefone: </Typography>
+            {user?.phone}
+          </Typography>
+        </Accordion>
 
-      <Typography>
-        <Typography type="bold">Bairro: </Typography>
-        {user?.address?.district ?? "Bairro não cadastrado"}
-      </Typography>
-
-      <Typography>
-        <Typography type="bold">Cidade: </Typography>
-        {user?.address
-          ? `${user.address.city ?? "Cidade não cadastrada"} - ${
-              user.address.state ?? "Estado não cadastrado"
-            }`
-          : "Endereço não cadastrado"}
-      </Typography>
-    </BottomSection>
+        <Accordion
+          title="Endereço"
+          isOpen={openAccordion === "address"}
+          onPress={() => toggleAccordion("address")}
+        >
+          <Typography>
+            {user?.address?.street} - {user?.address?.number} -{" "}
+            {user?.address?.zip_code}
+          </Typography>
+        </Accordion>
+      </BottomSection>
+    </ProfileContainer>
   );
 }
 
+const ProfileContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TopSection = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
 const BottomSection = styled.View`
   width: 100%;
-  height: 80%;
-  text-align: justify;
+  padding: 0 16px;
   justify-content: center;
   align-items: center;
 `;
 
 export const ImageEvent = styled.ImageBackground`
-  width: 350px;
-  height: 350px;
-  border-radius: 10px;
+  width: 300px;
+  height: 300px;
+  border-radius: 150px;
   overflow: hidden;
 `;

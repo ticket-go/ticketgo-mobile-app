@@ -12,7 +12,6 @@ export default function SignIn() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-
   const { login } = useAuth();
 
   const handleSubmit = async () => {

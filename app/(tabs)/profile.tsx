@@ -24,19 +24,17 @@ export default function HomeScreen() {
   return (
     <Container>
       <TopSection>
-        <View>
-          <Typography type="title">
-            Ticket<SpanTitle>GO</SpanTitle>
-          </Typography>
-          <ButtonWrapper>
-            <LogoutIcon
-              name="log-out"
-              size={24}
-              color="black"
-              onPress={handleLogout}
-            />
-          </ButtonWrapper>
-        </View>
+        <Typography type="title">
+          Ticket<SpanTitle>GO</SpanTitle>
+        </Typography>
+        <ButtonWrapper>
+          <LogoutIcon
+            name="log-out"
+            size={24}
+            color="red"
+            onPress={handleLogout}
+          />
+        </ButtonWrapper>
       </TopSection>
 
       <ProfileCard />
@@ -52,16 +50,11 @@ const Container = styled.View`
 `;
 
 const TopSection = styled.View`
-  width: 100%;
-  height: 5%;
-  justify-content: center;
-  align-items: center;
-`;
-
-const BottomSection = styled.View`
-  width: 100%;
-  height: 80%;
-  justify-content: center;
+  flex-direction: row;
+  margin-top: 30px;
+  width: 90%;
+  height: 10%;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -72,19 +65,4 @@ const ButtonWrapper = styled.View`
 
 const LogoutIcon = styled(Feather)`
   margin: 10px;
-`;
-
-const View = styled.View`
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-export const ImageEvent = styled.ImageBackground`
-  width: 350px;
-  height: 350px;
-  border-radius: 10px;
-  overflow: hidden;
 `;
