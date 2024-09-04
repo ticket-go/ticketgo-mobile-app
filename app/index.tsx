@@ -12,15 +12,17 @@ export default function SignIn() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const { login } = useAuth();
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       await login(username, password);
     } catch (error) {
       setError("Usuário ou senha incorretos.");
     }
+    setLoading(false);
   };
 
   const handlePress = () => {
@@ -51,10 +53,14 @@ export default function SignIn() {
           {error && <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>}
         </ViewInput>
 
-        <Button title="Entrar" onPress={handleSubmit} />
+        <Button
+          title={loading ? "Entrando..." : "Entrar"}
+          onPress={handleSubmit}
+          textColor="white"
+        />
 
         <TouchableOpacity onPress={handlePress}>
-          <Text>Esqueceu a senha?</Text>
+          <Typography>Esqueceu a senha?</Typography>
         </TouchableOpacity>
       </Content>
     </Container>

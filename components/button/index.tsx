@@ -1,5 +1,6 @@
 import React from "react";
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { Typography } from "../typography";
 import { styles } from "./styles";
 
 interface ButtonProps {
@@ -20,7 +21,9 @@ export function Button({
       style={[styles.button, { backgroundColor }]}
       onPress={onPress}
     >
-      <Text style={[styles.buttonText, { color: textColor }]}>{title}</Text>
+      <Typography style={[styles.buttonText, { color: textColor }]}>
+        {title}
+      </Typography>
     </TouchableOpacity>
   );
 }

@@ -14,7 +14,7 @@ import { Typography } from "@/components/typography";
 import { TicketCard } from "@/components/ticket";
 import { Ticket } from "@/types/ticket";
 import { api } from "@/services/api";
-import { Colors } from "@/styles/theme";
+import { Colors } from "@/styles/colors";
 
 import styled from "styled-components/native";
 import { useAuth } from "@/context/authContext";
@@ -86,9 +86,9 @@ export default function DetailEventScreen() {
   if (error) {
     return (
       <CenteredView>
-        <MessageNotTickets>{error}</MessageNotTickets>
+        <Typography>{error}</Typography>
         <ButtonBack onPress={() => router.back()}>
-          <Typography type="button" style={{ color: "#fff" }}>
+          <Typography type="button" color="white">
             Voltar
           </Typography>
         </ButtonBack>
@@ -99,9 +99,9 @@ export default function DetailEventScreen() {
   if (tickets.length === 0) {
     return (
       <CenteredView>
-        <MessageNotTickets>Nenhum ingresso disponível</MessageNotTickets>
+        <Typography>Nenhum ingresso disponível</Typography>
         <ButtonBack onPress={() => router.back()}>
-          <Typography type="button" style={{ color: "#fff" }}>
+          <Typography type="button" color="white">
             Voltar
           </Typography>
         </ButtonBack>
@@ -194,12 +194,6 @@ const CenteredView = styled.View`
   justify-content: center;
   padding-top: 20px;
   padding-bottom: 20px;
-`;
-
-const MessageNotTickets = styled.Text`
-  font-size: 20px;
-  font-weight: 500;
-  color: #000;
 `;
 
 const ButtonBack = styled.TouchableOpacity`
