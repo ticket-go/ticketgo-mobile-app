@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { Typography } from "../typography";
 import { Ionicons } from "@expo/vector-icons";
-import { tintColorLight } from "@/styles/theme";
+import { tintColorLight } from "@/styles/colors";
 
 interface AccordionProps {
   title: string;
@@ -38,7 +38,7 @@ const AccordionHeader = styled.TouchableOpacity`
   width: 70%;
   padding: 16px;
   border-radius: 8px;
-  border-color: "black";
+  border-color: ${tintColorLight};
   border-width: 1px;
   flex-direction: row;
   justify-content: space-between;
@@ -52,7 +52,7 @@ const AccordionTitle = styled(Typography)`
 
 const AccordionContent = styled.View`
   padding: 16px;
-  background-color: #e0e0e0;
+  background-color: transparent;
   border-radius: 8px;
   margin-top: 8px;
   gap: 4px;
