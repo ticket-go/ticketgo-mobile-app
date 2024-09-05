@@ -35,7 +35,7 @@ export default function DetailEventScreen() {
   useEffect(() => {
     async function fetchTickets() {
       try {
-        const response = await api.get(`/events/${eventUuid}/tickets/`, {
+        const response = await api.get(`/events/${eventUuid}/tickets/confirmed/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
