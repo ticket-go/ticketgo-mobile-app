@@ -25,10 +25,10 @@ export function ProfileCard() {
           {user?.username}
         </Typography>
 
-        {user?.image ? (
+        {!user?.image ? (
           <Image
-            source={!user.image ? { uri: user.image } : avatarImage}
-            style={{ width: 150, height: 150, marginBottom: 20 }}
+            source={avatarImage}
+            style={{ width: 100, height: 100, marginBottom: 20 }}
           />
         ) : (
           <ImageEvent source={avatarImage} />
@@ -44,6 +44,11 @@ export function ProfileCard() {
           <Typography>
             <Typography type="bold">Nome: </Typography>
             {user?.first_name} {user?.last_name}
+          </Typography>
+
+          <Typography>
+            <Typography type="bold">Sexo: </Typography>
+            {user?.gender === "M" ? "Masculino" : "Feminino"}
           </Typography>
 
           <Typography>
@@ -98,8 +103,8 @@ const BottomSection = styled.View`
 `;
 
 export const ImageEvent = styled.ImageBackground`
-  width: 300px;
-  height: 300px;
+  width: 150px;
+  height: 150px;
   border-radius: 150px;
   overflow: hidden;
 `;

@@ -3,7 +3,6 @@ import { Typography } from "../typography";
 import { useRouter } from "expo-router";
 import { Event } from "@/types/event";
 import { useEvent } from "@/context/eventContext";
-import { tintColorLight } from "@/styles/theme";
 
 interface EventCardProps {
   event: Event;
@@ -20,7 +19,13 @@ export function EventCard({ event }: EventCardProps) {
 
   return (
     <Container onPress={handleSubmit}>
-      <ImageEvent source={require("@/assets/images/event/banner-event.png")}>
+      <ImageEvent
+        source={
+          event.image
+            ? { uri: event.image }
+            : require("@/assets/images/event/banner-event.png")
+        }
+      >
         <OverlayImageCard />
         <Content>
           <TitleEvent>{event.name}</TitleEvent>
