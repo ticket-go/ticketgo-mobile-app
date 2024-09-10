@@ -1,24 +1,16 @@
 import styled from "styled-components/native";
 import { useAuth } from "@/context/authContext";
-import { useRouter } from "expo-router";
-import React from "react";
 import { Typography } from "@/components/typography";
 import { SpanTitle } from "@/styles/theme";
 import { Feather } from "@expo/vector-icons";
 import { ProfileCard } from "@/components/profile-card";
+import { tintColorLight } from "@/styles/colors";
 
 export default function HomeScreen() {
-  const router = useRouter();
   const { logout } = useAuth();
 
-  const handleLogout = () => {
-    try {
-      logout();
-      router.replace("/");
-      alert("Logout realizado com sucesso");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (
@@ -31,7 +23,7 @@ export default function HomeScreen() {
           <LogoutIcon
             name="log-out"
             size={24}
-            color="red"
+            color={tintColorLight}
             onPress={handleLogout}
           />
         </ButtonWrapper>
