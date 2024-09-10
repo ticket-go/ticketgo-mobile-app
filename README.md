@@ -1,52 +1,50 @@
-# Welcome to your TicketGO APP 👋
+# Bem-vindo ao TicketGO APP 📲
 
-## Baixar projeto em sua máquina
+Este projeto consiste em um aplicativo mobile desenvolvido para realizar a autenticação de ingressos de eventos através da leitura de QRCode. A aplicação móvel é uma extensão do ecossistema <strong>TicketGO</strong>, proporcionando uma <strong>ferramenta poderosa</strong> para que os produtores possam validar ingressos em tempo real durante seus eventos.
+
+## Tecnologias Utilizadas 🔧
+
+- React Native
+- Expo
+- TypeScript
+- Axios
+- AsyncStorage
+- Styled Components
+
+## Pré-requisitos 📋
+
+- Node.js
+- Expo CLI
+- Git
+
+## Executar Projeto:
+
+### Clone este repositório:
 
 ```bash
-npm install
+   https://github.com/ticket-go/ticketgo-mobile-app.git
 ```
 
-1. Install dependencies
+### Navegue até o diretório do projeto:
 
-   ```bash
+```bash
+   cd ticketgo-mobile-app
+```
+
+### Instale as dependências:
+
+```bash
    npm install
-   ```
 
-2. Start the app
+   or
 
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+   yarn install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Após instalar as dependências inicie o projeto no Expo:
 
-## Learn more
+```bash
+   npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Use o app Expo Go em seu dispositivo móvel para escanear o QRCode dos ingressos.
