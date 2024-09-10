@@ -1,50 +1,50 @@
-# Welcome to your Expo app 👋
+# Bem-vindo ao TicketGO APP 📲
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este projeto consiste em um aplicativo mobile desenvolvido para realizar a autenticação de ingressos de eventos através da leitura de QRCode. A aplicação móvel é uma extensão do ecossistema <strong>TicketGO</strong>, proporcionando uma <strong>ferramenta poderosa</strong> para que os produtores possam validar ingressos em tempo real durante seus eventos.
 
-## Get started
+## Tecnologias Utilizadas 🔧
 
-1. Install dependencies
+- React Native
+- Expo
+- TypeScript
+- Axios
+- AsyncStorage
+- Styled Components
 
-   ```bash
-   npm install
-   ```
+## Pré-requisitos 📋
 
-2. Start the app
+- Node.js
+- Expo CLI
+- Git
 
-   ```bash
-    npx expo start
-   ```
+## Executar Projeto:
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### Clone este repositório:
 
 ```bash
-npm run reset-project
+   https://github.com/ticket-go/ticketgo-mobile-app.git
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Navegue até o diretório do projeto:
 
-## Learn more
+```bash
+   cd ticketgo-mobile-app
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Instale as dependências:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+   npm install
 
-## Join the community
+   or
 
-Join our community of developers creating universal apps.
+   yarn install
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Após instalar as dependências inicie o projeto no Expo:
+
+```bash
+   npx expo start
+```
+
+## Use o app Expo Go em seu dispositivo móvel para escanear o QRCode dos ingressos.

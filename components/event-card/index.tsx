@@ -3,7 +3,6 @@ import { Typography } from "../typography";
 import { useRouter } from "expo-router";
 import { Event } from "@/types/event";
 import { useEvent } from "@/context/eventContext";
-import { tintColorLight } from "@/styles/theme";
 
 interface EventCardProps {
   event: Event;

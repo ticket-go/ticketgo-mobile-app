@@ -16,8 +16,8 @@ export default function HomeScreen() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const response = await api.get<Event[]>("/events");
-        setEvents(response.data);
+        const response = await api.get("/events/");
+        setEvents(response.data.results);
         return response;
       } catch (err) {
         setError("Failed to load events");
