@@ -19,13 +19,7 @@ export function EventCard({ event }: EventCardProps) {
 
   return (
     <Container onPress={handleSubmit}>
-      <ImageEvent
-        source={
-          event.image
-            ? { uri: event.image }
-            : require("@/assets/images/event/banner-event.png")
-        }
-      >
+      <ImageEvent source={require("@/assets/images/event/banner-event.png")}>
         <OverlayImageCard />
         <Content>
           <TitleEvent>{event.name}</TitleEvent>
